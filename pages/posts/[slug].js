@@ -29,7 +29,7 @@ export default function Post({ post, morePosts, preview }) {
             <article>
               <Head>
                 <title>
-                  {post.title} | Next.js Blog Example with {CMS_NAME}
+                  {post.title} | SmilePart
                 </title>
                 <meta property="og:image" content={post.ogImage.url} />
               </Head>
@@ -52,12 +52,14 @@ export default function Post({ post, morePosts, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
   const data = await getPostAndMorePosts(params.slug, preview)
+  const content = await markdownToHtml(data?.post?.content || '')
 
   return {
     props: {
       preview,
       post: {
         ...data?.post,
+        content,
       },
       morePosts: data?.morePosts ?? [],
     },
